@@ -1,0 +1,486 @@
+%\usepackage{marginpar}
+\usepackage{marginnote}
+
+\newcommand\paraprefix{para }
+
+\newcommand\quoterefsep{\ \newline \newline\ }
+\newcommand\qrrbracket{}
+\newcommand\qrcitetype{cite}
+\usepackage{etoolbox}
+\newtoggle{hascite}
+\toggletrue{hascite}
+\newcommand\ndtattrib{\ \textemdash \ \textit{NdT}}
+%---
+\newcommand\qrreset{%
+\renewcommand\quoterefsep{\ \newline \newline\ }%
+\renewcommand\qrrbracket{}%
+\toggletrue{hascite}%
+\renewcommand\qrcitetype{cite}%
+}
+%---
+\newcommand\qrquote{%
+\qrreset%
+}
+%---
+\newcommand\qrinline{%
+\renewcommand\quoterefsep{\ \textendash\ }%
+\renewcommand\qrrbracket{}%
+\toggletrue{hascite}%
+\renewcommand\qrcitetype{cite}%
+}
+%---
+\newcommand\qrfoot{%
+\renewcommand\quoterefsep{}%
+\renewcommand\qrrbracket{}%
+\toggletrue{hascite}%
+\renewcommand\qrcitetype{footcite}%
+}
+%---
+\newcommand\qrparencite{%
+\renewcommand\quoterefsep{\ (}%
+\renewcommand\qrrbracket{)}
+\toggletrue{hascite}%
+\renewcommand\qrcitetype{cite}%
+}
+%---
+\newcommand\qrnocite{%
+\renewcommand\quoterefsep{}%
+\renewcommand\qrrbracket{}
+\togglefalse{hascite}%
+\renewcommand\qrcitetype{nocite}%
+}
+%---
+%Numbered quotes
+\newcounter{quono}%
+\renewcommand{\thequono}{\arabic{quono}}
+\newcommand{\quon}{\refstepcounter{quono}}
+\setcounter{quono}{0} 
+%===============
+% #1 is the quotation name, #2 is the quotation text, #3 is the quotation cite, #4 is the pinpoint reference, #5 is sep (now a parm switch: \quoterefsep)
+\newcommand{\definecaption}[4]{%
+\expandafter\newcommand\csname Δdc#1\endcsname{\mkbibquote{\marginnote{{\small\color{blue}#1}}#2}\iftoggle{hascite}{\quoterefsep\csname \qrcitetype\endcsname[#4]{#3}\qrrbracket}%true
+{\csname \qrcitetype\endcsname{#3}}%false
+}
+\quon
+\expandafter\newcommand\csname  Θdc\thequono\endcsname{#1}
+\expandafter\newcommand\csname  Λdc\thequono\endcsname{#2}
+\expandafter\newcommand\csname  Πdc\thequono\endcsname{#3}
+\expandafter\newcommand\csname  Σdc\thequono\endcsname{#4}
+}
+
+%===============
+\newcommand{\usecaption}[1]{%
+   {\csname Δdc#1\endcsname}}
+
+
+
+%===============
+% #1 is the quotation name, #2 is the quotation text, #3 is the quotation cite, #4 is the pinpoint reference #5 is sep
+\newcommand{\definecaptionx}[5]{%
+\expandafter\newcommand\csname 4gammacaption#1\endcsname{``#2'' \newline \newline  \csname #5\endcsname[#4]{#3}\hfill{\tiny\color{blue} #1}}}
+
+\newcommand{\usecaptionx}[1]{%
+   {\csname 4gammacaption#1\endcsname}}
+
+
+%===============
+%\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\newcommand\doquote[1]{%
+\vskip1.5em
+\begin{tcolorbox}[colback=blue!3!white,
+fuzzy shadow={2mm}{-1mm}{0mm}{0.1mm}%
+{black!50!white}
+]
+\begin{quotation}
+%\cite{#1}
+#1
+\end{quotation}
+\end{tcolorbox}
+\vskip1em
+}
+
+
+
+
+
+\DeclareCiteCommand{\tcite}
+{   % prenote
+    \usebibmacro{prenote}%
+}
+{%loopcode
+%    \printnames{author}%
+%    \marginpar{
+%        \printnames{author}, 
+%        \printfield{year}. 
+\printfield{title}  
+%    }
+}
+{   %sepcode
+    \multicitedelim%
+}
+{\usebibmacro{postnote}}
+
+
+\usepackage{classics}
+\newpagination {\partsb} {Part} {Parts} { and }
+\newpagination {\chapters} {Chapter} {Chapters} { and }
+\newclassic {Swift} {\partsb{\classicsRoman{#1}}|, \chapters{\classicsRoman{#1}}}
+%    {\Swift{4}[4]}
+%         produces:
+%      Part IV, Chapter IV
+
+%===============
+% Now the captions
+\definecaption{qa1}{the stout indefatigable penguin}{a1}{20a}
+\definecaption{qa2}{Linux pretty much runs the world}{a1}{20a}
+\definecaption{qa3}{the best tool for the job}{a1}{20b}
+\definecaption{qa4}{Linux excels at embedded applications}{a1}{20b}
+\definecaption{qa5}{the fragmented IoT ecosystem we have now}{a1}{20b}
+\definecaption{qa6}{often, and largely, thrown out into the wild with little security design principes in mind}{a1}{20c}
+\definecaption{qa7}{a data fabric that can be used to automatically manage everything}{a1}{20c}
+\definecaption{qa8}{2020  457b}{a1}{20c}
+\definecaption{qa9}{a world immersed in IoT is coming, and it needs to be a safe one}{a1}{20c}
+\definecaption{qa10}{the monthly drip}{a2}{35}
+
+\definecaption{qa11}{almost irrelevant}{a2}{36b}
+\definecaption{qa12}{the lack of relevant content -- or resources and desire to create  their own --}{a2}{36b}
+\definecaption{qa13}{searching for a relevant snippet of info to support a key point}{a2}{37a}
+\definecaption{qa14}{of most use to students or journalists}{a2}{37a}
+\definecaption{qa15}{Smart Lookup isn't always all that smart, however. I looked up "fiesta", in the context of festivities, and was shown content around Ford's small car and a US grocery chain.}{a2}{37a}
+
+
+\definecaption{qa16}{great on a big desktop screen, if almost useless on a laptop}{a2}{37a-b}
+\definecaption{qa17}{reasonable working translations that make almost perfect sense}{a2}{37b}
+\definecaption{qa18}{a deck of slides}{a2}{37b}
+\definecaption{qa19}{something that looks professional}{a2}{37b}
+\definecaption{qa20}{more suited to the classroom than the boardroom}{a2}{37c}
+\definecaption{qa21}{It's a classic maximum impact, minium effort effect.}{a2}{37c}
+\definecaption{qa22}{Know what you want to say but have the design skills of a one-armed kangaroo?}{a2}{37b}
+\definecaption{qa23}{Of course, not every Excel user ever touches the Query Editor, let alone uses Power BI}{a2}{38a}
+\definecaption{qa24}{funnel charts … are designed to show changes in value across multiple stages of a pipeline or process}{a2}{38a}
+\definecaption{qa25}{a customer-centric view}{a2}{38c}
+
+\definecaption{qa26}{a bigger picture view}{a2}{38c}
+\definecaption{qa27}{a credible alternative}{a2}{39a}
+\definecaption{qa28}{Excel is still unbeatable as a power user's tool for serious analysis}{a2}{39c}
+\definecaption{qa29}{and it's hard to argue with the price tag}{a2}{40c}
+\definecaption{qa30}{a string of islands}{a3}{37a}
+\definecaption{qa31}{the Robinson Crusoe problem}{a3}{39a}
+\definecaption{qa32}{archaeologically visible}{a3}{39a}
+\definecaption{qa33}{Building a seaworthy vessel took months of planning, suggesting it was impossible without advanced communication skills}{a3}{39a}
+\definecaption{qa34}{companions of the ancient mariners' attempts}{a3}{39a}
+\definecaption{qa35}{this language issue}{a3}{39b}
+\definecaption{qa36}{populations \dots in genetic contact}{a3}{39c}
+\definecaption{qa37}{"guided by the evidence"}{a3}{39c}
+\definecaption{qa38}{the dozen unfortunates}{a4}{}
+\definecaption{qa39}{the jurors were so divided that …}{a4}{}
+\definecaption{qa40}{On one occasion the case had to start again after it was discovered that a juror was illiterate and had not been following the reams of documents the jurors had to read.}{a4}{}
+\definecaption{qa41}{\textsc{Hobbes:} Do you see any snapping turtles, eels or leeches here? \\ \textsc{Calvin:} Nope. So far, our expedition is a failure.}{a5}{}
+
+
+
+\definecaption{q2360}{The concept of circumstantial evidence is well known to the law. Far from being a weak form of evidence, facts relating to the circumstances of a crime can be powerful evidence proving guilt. Books, films and the like often perpetuate the myth that a circumstantial case is a weak case, but that is not so.}{b703}{4.60}%{cite}
+
+\definecaption{q2}{If a haemophilic bleed [sic] to death from a small cut, the death cannot be said to be an accidental outcome of the cut. -- \fullcite[Philp J at 414]{c2}}{b2}{4.350}%{cite}
+
+\definecaption{q7}{Interpreting is a highly complex activity that requires as a base, a native or native-like level of competence in at least two languages in a variety of genres and registers. This in itself is a rare ability that should be valued as such, normally only those who have received formal bilingual education and have lived in at least two different language communities throughout their lives can acquire such high levels of bilingualism. Very few professions require such a demanding prerequisite to train in their field.}{b600-29}{p ~443}%{cite}
+
+\definecaption{q8}{Note that I shall constantly be talking about the Baltic Sea, although it has not always been a sea but a lake, too (e.g. ca. 10600--9300 BC, ca. 8800--6200 BC).}{b901-13}{p~227}%{cite}
+
+%\definecaption{q11}{Se avete la cravatta storta ve la raddrizzate e nemmeno a un hippy piace aver caccole di piccione sulla spalla.\footnote{\mkbibquote{If you have a crooked tie, you straighten it and not even a hippy likes having pigeon poo on their shoulders.}}}{b23o}{246}
+
+\definecaption{q11}{Se avete la cravatta storta ve la raddrizzate e nemmeno a un hippy piace aver caccole di piccione sulla spalla.\footnote{\mkbibquote{If you have a crooked tie, you'll straighten it up and not even a hippy likes having pigeon poo on their shoulders.}\ndtattrib}}{b23o}{246}
+
+\definecaption{q12}{… a misunderstanding of method and an inexplicable warping of historical perspective}{b1001}{2}
+
+
+\definecaption{q10}{When Galileo, Descartes and their successors looked for distant moons or hidden microstructures, ...}{b904-22}{p 539}
+
+
+\definecaptionx{q13}{It is a maxim among these lawyers that whatever has been done before, may legally be done again: and therefore they take special care to record all the decisions formerly made against common justice, and the general reason of mankind. These, under the name of precedents, they produce as authorities to justify the most iniquitous opinions; and the judges never fail to direct accordingly.}{b1002}{{\Swift{4}[4]}}{tcite}%{\pgno~272}
+
+\definecaption{q15}{3(c) Are sentences free of nominalisation?}{b2001}{\paraprefix 10.7}%{cite}
+
+\definecaption{q16}{ratio v obiter}{b2001}{\paraprefix 10.5.1}%{cite}
+
+\definecaption{q17}{William never learned how to speak English.}{b2001}{\paraprefix 10.2}%{cite}
+
+\definecaption{q18}{Recognising irony}{b2001}{\paraprefix 9.3}%{cite}
+
+\definecaption{q19}{Never begin a paragraph with a quote.}{b2001}{\paraprefix 10.8.3}%{cite}
+
+\definecaption{q20}{William Blackstone used to refer to Norman Law French as a 'badge of slavery'. [citing Mellinkoff Language of the Law 2004 p64]}{b2001}{\paraprefix 10.2}%{cite}
+
+\definecaption{q21}{While commentary is important to open the door, others cannot always be relied upon  to 'get it right'.}{b2001}{\paraprefix 3.3}%{cite}
+
+\definecaption{q22}{to push the door ajar}{b2001}{\paraprefix 6.1}%{cite}
+
+\definecaption{q23}{a useful foil}{b2001}{\paraprefix 6.9}%{cite}
+
+\definecaption{q24}{the references the commissions can undertake}{b2001}{\paraprefix 4}%{cite}
+
+\definecaption{qa42}{Brilliantly reasoned and beautifully written}{a6}{}
+
+\definecaption{qa43}{Literacy … Is it also spreading ignorance?}{a6}{}
+\definecaption{qa44}{He insists too vehemently, with too little justification, that …}{a6}{}
+\definecaption{qa45}{Buckley \& Nunn}{a7.3}{}
+\definecaption{qa46}{There are lots of good coloured photographs.}{a7.3}{}
+\definecaption{qa47}{Gaelic-speaking Highlanders}{a7.3}{}
+
+\definecaption{qa48}{might be able to assist with their enquiries}{a8}{}
+\definecaption{qa49}{It's believed Mr Kirkman might be a former employee of Ms Powell}{a8}{}
+\definecaption{qa50}{causing the web pages to crash temporarily under the strain of stickybeaking}{a12}{}
+\definecaption{qa51}{The brave viewer shall be rewarded.}{a13}{}
+\definecaption{qa52}{a sure sign that autumn is finally here}{a17}{}
+\definecaption{qa53}{with no criminal record, Watson could not be traced by his DNA}{a18}{}
+\definecaption{qa54}{She's here!}{a19}{}
+
+\definecaption{thq1}{Although, the movement [nudism] did not officially organize in England until after the publication of \emph{Women in Love}, [DH]  Lawrence could have learned about it from his visits to Germany and Austria when he first began to court Frieda, whose family, the von Richthofens, were part of the German aristocracy and upper class, a group noted by Kruger for including social nudity in its daily life (\citeauthor[139]{a21}). Like Lawrence’s attempt to establish a \mkbibquote{new order,} nudists wanted to create a \mkbibquote{new Eden,} where they could live in freedom from the evils of Victorian social codes and gender roles.}{th1}{121}
+	
+	
+\definecaption{qa55}{I'm not your personal standup comic.}{a24}{}
+\definecaption{qa56}{stubborn weather systems causing persistent rain}{a22}{}
+\definecaption{qa57}{City skies are finally set to clear}{a22}{}
+\definecaption{qa58}{But the sun is in for a lot of work to make up the nearly three-degree difference in average maximum temperatures, ….}{a22}{}
+\definecaption{qa59}{Rural areas that have remained mostly dry throughout this month will get a good lashing at the start of the week.}{a22}{}
+\definecaption{qa60}{If you want nuance and factually based characters, this might not be that movie.}{a23}{}
+\definecaption{qa61}{plodding and generic}{a23}{}
+\definecaption{qa62}{A terrorist attack does not adapt well to the format of a disaster movie.}{a23}{}
+\definecaption{qa63}{Real people, including some Australians, died in the attacks. Filmmakers have a duty of care to that truth. Liam Worthington, in his debut feature, gives us a ship of fools squabbling in their hotel room. Even 10 years later, it's too soon for that sort of licence.}{a23}{}
+\definecaption{qa64}{So far as I can tell, none of the main hotel characters is real. They are either composites or invented, to serve the director's quasi-religious agenda, delivered in a cloying voiceover…}{a23}{}
+\definecaption{qa65}{Ms Cartwright's body was found by a council worker wrapped in an orange blanket at Buffalo Creek Reserve playground at Hunters Hill, on Sydney's north shore, on October 3.}{a25}{}
+\definecaption{qa66}{Ms Cartwright's hands were bound and there were drag marks in the dirt.}{a25}{}
+\definecaption{qa67}{Tonight's double episode continues with the ramifications of Margaret's daughter Charlotte's decision to join Lydia's bordello.}{a26}{}
+\definecaption{qr1}{I had a lot more input than I ever dreamed I would. Most of my ideas were embraced. I did have very bold ideas. I was just waiting for them to be shot down, because that's sort of what you're used to, but it was the opposite. Chris [Chibnall] just said, \mkbibquote{love it, go for it}.}{qq1}{}
+
+\definecaption{qr2}{I walked through the doors and it was just incredible. Because it's such an enclosed set as well, it feels really real. It was one of the greatest moments in my life…}{qq2}{}
+
+
+\definecaption{qr3}{I fell in love with him. We're like brother and sister. I just love him. We just had so much in common that we loved.}{qq1}{}
+
+\definecaption{qr4}{there's a longing to get back to nature}{qq3}{}
+
+\definecaption{qr5}{There's simple pleasures to be found in pounding waves, a roaring campfire and a sky full of stars, and there's something about the very act of setting up a camp site that brings us back to the kind of self-sufficiency that we've lost.}{qq4}{}
+
+
+\definecaption{qa106}{the upcoming seventh episode of the new season, titled \textit{Kerblam!}}{a37}{}
+	
+
+\definecaption{qa107}{the phenomenally successful show [\emph{Game of Thrones}] has in fact been an unlikely flagbearer for this golden age of television}{a40}{}
+
+\definecaption{qa108}{basement dwellers}{a40}{}
+
+\definecaption{qa109}{James Cameron's passion project, \emph{Alita: Battle Angel} (Feb 14 [2019]) based on Yukito Kishiro's manga, finally comes to the screen, directed by Robert Rodriguez.}{a41}{}
+
+\definecaption{qa110}{the script is a starting point}{a43}{}
+\definecaption{qa111}{This is the year that ambitious television dramas found new ambitions.}{a43}{}
+\definecaption{qa112}{a tendency for a defining voice to push the boundaries of a series}{a43}{}
+\definecaption{qa113}{Series are becoming shorter and more concise}{a43}{}
+\definecaption{qa114}{Leave your expectations at the opening scene.}{a43}{}
+\definecaption{qa115}{Jodie Whittaker as the first female Doctor nails it.}{a44}{}
+\definecaption{qa116}{a headache for the state government}{a45}{}
+\definecaption{qa117}{the building's atmosphere}{a46}{}
+\definecaption{qa118}{The discovery of amphetamine and cocaine in the air at the AFP headquarters has thrown fresh doubt on th dismissal of a former forensic officer.}{a47}{}
+\definecaption{qa119}{… Jenna Coleman is gradually maturing her elegant Queen}{a48}{}
+\definecaption{qa120}{not a subtle film}{a49}{}
+\definecaption{qa121}{Just how much homicidal mania is acceptible from an avenging heroine, particularly one situated in a world that loosely resembles our own?}{a49}{}
+\definecaption{qa122}{As this brings home, action movies are political even when they strive not to be, inevitably raising questions about who has the right to violence and which deaths are worth mourning.}{a49}{}
+\definecaption{qa123}{When he first appeared, Deadpool was funny because he had the element of surprise on his side. There's none of that left anymore.}{a54}{}
+\definecaption{qa124}{But freshness is not the point here. The film has become a test case. If this expurgated version does clean up new markets, the two-version ploy could become a habit.}{a54}{}
+\definecaption{qa125}{Actors and visual effects artists work together to create a seamless whole.}{a58}{}
+\definecaption{qa126}{While the plot is fairly simple … the world-building is extraordinarily sophisticated.}{a58}{}
+\definecaption{qa127}{It's a mythical civilisation that allows the filmmakers to develop the story from the ground up.}{a58}{}
+
+\definecaption{qr6}{interfering with kids' brain development}{qq5}{}
+\definecaption{qr7}{not learning about emotional regulation}{qq5}{}
+\definecaption{qr8}{losing the ability to read facial cues and emotions}{qq5}{}
+\definecaption{qr9}{We have the beginning of a different kind of human … a non-emotional non-connected species}{qq5}{}
+\definecaption{qr10}{They get frustrated really easily, they don't have social problem-solving skills and looking someone in the eye is becoming rare.}{qq6}{}
+\definecaption{qr11}{the rise in autism was coincidental, due to changes in diagnosis}{qq7}{}
+
+
+\definecaption{qa128}{clearly been working overtime}{a61}{}
+\definecaption{qa129}{Aquaman is a comic book character -- pure and mostly simple}{a61}{}
+\definecaption{qa130}{But more of a problem for the film is Aquaman's clear physical superiority over the bad guys.}{a61}{}
+\definecaption{qa131}{Here's what happens when you uncorset an 18th-century period drama.}{a62}{}
+\definecaption{qa132}{absurd and brutally funny}{a62}{}
+\definecaption{qa133}{Kensington Palace (doubled by Hatfield House and Hampton Court Palace in the film for obvious reasons)}{a62}{}
+\definecaption{qa134}{a raw, bawdy, horribly entertaining study of sex, power and betrayal -- featuring three fabulously fleshy femmes}{a62}{}
+\definecaption{qa135}{after multiple severe thunderstorms rolled across the city yesterday evening, raining down cricket ball-sized hailstones that dented cars and smashed through windows across the city}{a63}{}
+\definecaption{qa136}{A Sydney man jailed for drug smuggling was acquitted on appeal because his jury had turned \mkbibquote{toxic} as they were forced tp spend 50 days in what became \mkbibquote{futile} argument about their verdict.}{a64}{}
+\definecaption{qa137}{The former Liberal leader, who celebrates his 80th birthday in July, is understood to be assisting officers from North Shore Police Area Command with their inquiries and has provided them with a statement.}{a65}{}
+\definecaption{qa138}{few of today's kids would have the attention span to watch it [Henri Safran's \mkbibitalic{Storm Boy} (1976)], trained as they are to expect fast cuts and simple explanations.}{a66}{}
+\definecaption{qa139}{Or do we, like infant seabirds, need to be spoon fed?}{a66}{}
+\definecaption{qa140}{It's as if the filmmakers can't decide whether their central characters are pawns or players. And the screenplay isn't clever enough to accommodate both.}{a67}{}
+\definecaption{qa141}{But the filmmakers' controversial assertion that Mary was manipulated into a nation-defining marriage by an opportunistic act of cunnilingus feels a little tawdry.}{a67}{}
+\definecaption{qa142}{rather stilted [when seen against \mkbibquote{Yorgos Lanthimo's monstrously entertaining account of Queen Anne's court}]}{a67}{}
+\definecaption{qa143}{The arrested man was last night assisting police with their inquiries.}{a68}{}
+\definecaption{qa144}{The teenager was last night assisting police with their inquiries and no charges have been laid.}{a69}{}
+\definecaption{qa145}{But both parties agreed at a directions hearing in October 2017 that it would be in their interests to mediate the dispute.}{a79}{}
+\definecaption{qa146}{A source with knowledge of the investigation said …}{a70}{}
+\definecaption{qa147}{in regards to job uselessness}{a71}{}
+\definecaption{qa148}{{Matterhorn}}{a72}{}
+\definecaption{qa149}{{pine forest}}{a72}{}
+\definecaption{qa150}{a pair of lakes as blue as eyes}{a72}{}
+\definecaption{qa151}{{out of sight}}{a72}{}
+\definecaption{qa152}{the tiny, four building Walser village of Resy}{a72}{}
+\definecaption{qa153}{No sooner does it appear than it begins to spin cloud about itself again [the Matterhorn]}{a72}{}
+\definecaption{qa154}{the vivacious Keira Knightley}{a73}{}
+\definecaption{qa155}{…modern, tomboyish and careless of others' opinions. Knightley romps through all these changes like a schoolgirl playing truant. Her jolly attitude robs the film of its eroticism.}{a73}{}
+\definecaption{qa156}{stretches of exquisite boredom}{a74}{}
+\definecaption{qa157}{misunderstood but perky [teenagers, in modern film, refreshing change from]}{a74}{}
+\definecaption{qa158}{[The situation in Australia is different …]}{a75}{}
+\definecaption{qa159}{the 1920s were such a fertile and experimental period for Western literature}{a75}{}
+\definecaption{qa160}{US copyright law, which is mind numbingly complex, has skewed towards enriching companies and the heirs of writers and artists at the expense of the public}{a75}{}
+\definecaption{qa161}{The \mkbibquote{nature novel} is emerging as a distinct English genre}{a76}{}
+\definecaption{qa162}{mirrors another turn in contemporary British nature writing, which is distancing itself from utopian fantasies of \mkbibquote{Deep England}. The old ways might have been beautiful, the novel insists, but they also came at a cost, especially for women.}{a76}{}
+\definecaption{qa163}{chasing thunderstorms}{a77}{}
+\definecaption{qa164}{Meredith McKinney is not only an award-winning translator but also daughter of the great Australian poet Judith Wright, and it shows.}{a78}{}
+\definecaption{qa165}{his writing is functional and there's too much detail}{a81}{}
+\definecaption{qa166}{{proclaimed}}{a82}{}
+\definecaption{qa167}{the movie is an unhappy mess}{a82}{}
+\definecaption{qa168}{{improbable and convoluted explanations}}{a82}{}
+\definecaption{qa169}{{fall completely flat}}{a82}{}
+\definecaption{qa170}{{the biggest mystery}}{a82}{}
+\definecaption{qa171}{{There are some good scenes}}{a82}{}
+\definecaption{qa172}{{pocket a pay cheque}}{a82}{}
+\definecaption{qa173}{{an unnecessary undercurrent}}{a82}{}
+\definecaption{qa174}{the Baker Street boobs}{a82}{}
+
+
+\definecaption{qr12}{When you would turn on the air conditioning, there would be powder falling from the ceiling.}{qq8}{}
+\definecaption{qr13}{The fact that it might be difficult for BuzzFeed to rely on the defence of justification \mkbibquote{only goes to show you might have thought about what you published before you did so}.}{qq9}{}
+\definecaption{qr14}{It came through in several waves over several hours.}{qq10}{}
+\definecaption{qr15}{This is a very fluid and active investigation.}{qq11}{}
+
+
+\definecaption{qa175}{The figure was detailed in an ineffectively redacted public document uploaded to the Federal Court's website in November.}{a84}{}
+\definecaption{qa176}{Noona, west of Dubbo, and Borrona Downs, west of Bourke}{a85}{}
+\definecaption{qa177}{this new mob}{a88}{}
+\definecaption{qa178}{No, what this new mob has done is return to the book -- which is more like a 60-page story -- and monkey with that, instead of the film.}{a88}{}
+\definecaption{qa179}{the location is not just familiar, but exact}{a88}{}
+\definecaption{qa180}{Most Australian filmmakers are out of their depth in Aboriginal spirituality, and director Shawn Seet is no different.}{a88}{}
+\definecaption{qa181}{He's one of the strengths of the movie, along with the pelicans trained for the film.}{a88}{}
+\definecaption{qa182}{(almost no CGI, no dragons or superheroes)}{a88}{}
+\definecaption{qa183}{The Ngarrendjeri custodians of the land were consulted about the script and enlisted on the sensitivities of location, but you can't legislate for tone.}{a88}{}
+\definecaption{qa184}{You can't improve a classic.}{a88}{}
+\definecaption{qa185}{This is about reworking the tailings of an old mine site, looking for easy money. That tells us something about our own times, unfortunately.}{a88}{}
+\definecaption{qa186}{who had made bizarre social media posts recently}{a89}{}
+\definecaption{qa187}{slower than a horse and cart}{a90}{}
+\definecaption{qa188}{the brains trust that have dreamt up this version}{a93}{}
+\definecaption{qa189}{The third officer was a probationary constable only four weeks into the job.}{a101}{}
+
+\definecaption{qa190}{Pretty Pine, north of Deniliquin}{a95}{}
+\definecaption{qa191}{loosely based on an 18th century novel}{a100}{}
+\definecaption{qr16}{The bullet missed her artery by a millimetre.}{qq12}{}
+	
+\definecaption{qr17}{It seems very reasonable that the deserts of the Sahara, Arabia, Mongolia and Gobi probably played an important role in keeping different populations apart for long periods of time.}{qq13}{}
+
+\definecaption{qic1}{Cornificius begrudged the arts their good fortune. Jealously feeling it would be a disgrace for one advanced in years to go to school, and for an old man to be shown up as but a boy in understanding, he set himself to carping on what he despaired of learning. (b1 c5)}{incol1}{pp 487--488}
+
+\definecaption{qic2}{\textsc{vi superum} ["\textsc{by the force of those above}"] By the violence of the gods [This is the paraphrase: \textit{vi} = \textit{violentia}; \textit{superum} = \textit{deorum}], according to Homer, who says that the gods have been asked to hate the Trojans.}{incol2}{p~132}
+
+\definecaption{qa192}{The gods may all have possessed significant powers over the lives of mortals, but they saw them as playthings to take an interest in and destroy without a moment's hesitation if they felt slighted, betrayed, or simply unloved by their worshippers.}{a103}{p~25}
+
+
+\definecaption{qic3}{The first step would be to remove the veil of innocence … Recognition of the social construction of facts and taxonomies would be a good start.}{incol3}{p 55}
+
+\definecaption{q25}{habiru}{b2027}{p 179}
+\definecaption{q26}{(ABC)}{b2027}{p 216}
+\definecaption{q27}{the circumstances are mysterious}{b2027}{p 205}
+\definecaption{q28}{alphabetic}{b2027}{p 215}
+\definecaption{q29}{the sequence of letters was well established}{b2027}{p 215}
+\definecaption{q30}{hub}{b2027}{p 150}
+\definecaption{q31}{texts in a multitude of languages}{b2027}{p 150}
+\definecaption{q32}{that other people and cultures existed}{b2027}{p 151}
+\definecaption{q33}{incomprehensible to the mostly illiterate population}{b2027}{p 278}
+\definecaption{q34}{high quality}{b2027}{p 178}
+\definecaption{q35}{an archaeological phantom}{b2027}{p 205}
+\definecaption{q36}{relatively easy to learn with its reduced set of characters}{b2027}{p 178}
+
+\definecaption{q37}{There are many different citation styles.}{b2034}{p~232}
+\definecaption{q38}{The citation process can seem overwhelming at first, but it is really quite simple.}{b2034}{p~232}
+
+\definecaption{qa193}{raised on books}{a104}{p 162}
+
+\definecaption{qr18}{unintended conjuring trick}{qq14}{}
+
+\definecaption{qic4}{the dreadful \textit{John Carter} (dir. Andrew Stanton, 2012)}{col3.43}{p 699}{}
+
+\definecaption{qa194}{The war is the inevitable subject for German filmmakers and the source of some great films.}{a105}{}
+\definecaption{qa195}{This fourth entry in the series does nothing to mask the staleness of the formula.}{a106}{}
+\definecaption{qa196}{The one reason to consider seeing the film is [Tessa] Thompson, who is impressively convincing as a wide-eyed yet brainy ingenue.}{a106}{}
+\definecaption{qa197}{-- a sense of fellowship -- which the movie glosses over to its detriment}{a107}{}
+\definecaption{qa198}{The film looks great, a polished period piece, but it is polite, plodding and unconvincing.}{a107}{}
+\definecaption{qa199}{Tolkien's heirs made clearbefore the film arrived that they disapproved of it and they were right: he deserves better.}{a107}{}
+\definecaption{qa200}{the real art is in the images, specially the character designs}{a108}{}
+\definecaption{qa201}{Parents who concern themselves with such matters may object to the relatively limited role played by the female characters, or to the fact that violence as a problem-solving method is viewed more positively than otherwise.}{a108}{}
+\definecaption{qa202}{a pleasant, innocuous 90 minutes of entertainment for children and to adults who moderate their expectations.}{a108}{}
+
+\definecaption{qa203}{too much is left unexplored or under-explained}{a110}{}
+\definecaption{qa204}{The problem with this technologically enhanced reboot is that it's bring driven by outdated software.}{a111}{}
+
+\definecaption{qr19}{In winter, when my levels were tested, the UV rays are lower and the skin is more covered up.}{qq15}{}
+
+\definecaption{q39}{It may be that certain divine names were very ancient and that in time even the Egyptians forgot what they meant.}{b2040}{p 41}
+
+\definecaption{qa205}{amateur theologian}{a113}{}
+\definecaption{qa206}{(zebrafish are translucent and reproduce much more quickly)}{a114}{}
+\definecaption{qa207}{a new headache}{a118}{}
+\definecaption{qa208}{event-based surges}{a118}{}
+\definecaption{qa209}{known as \mkbibquote{patches}}{a118}{}
+\definecaption{qa210}{the rise of streaming}{a118}{}
+\definecaption{qa211}{on outcry on social media}{a118}{}
+\definecaption{qa212}{unfortunately incorrect}{a119}{}
+
+\definecaption{qr20}{The great period of climate change in Australia's human history was in Aboriginal times, when the seas rose and cut off Tasmania and cut off New Guinea from Australia.}{qq16}{}
+\definecaption{qr21}{the most difficult and interesting intellectual argument of the last 100 years}{qq16}{}
+\definecaption{qr22}{(the trial came down to whether she could be believed beyond reasonable doubt)}{qq17}{}
+
+\definecaption{qa213}{As it turned out, \mkbibquote{Oma} was a fizzer with no rain and no wind at PSF. However, all the media attention about the cyclone turned a lot of people off camping and attending the event. So in the end, we only had 40 people, but those who were there had a fantastic time and those who didn't turn up really missed out on all the fun!}{a120}{}
+\definecaption{qa214}{although there was a chill in the air as we ventured out into the bay}{a121}{}
+\definecaption{qa215}{We were able to spend most of the time without the hindrance of clothing, that is until the temperature dropped, forcing us to dress to keep warm.}{a121}{}
+\definecaption{qa216}{\mkbibquote{club uniform}}{a122}{}
+
+\definecaption{qa217}{metal raindrops from the dawn of our solar system}{a123}{}
+\definecaption{qa218}{The ability to face problems early remains a marker of any successful outfit today.}{a124}{}
+\definecaption{qa219}{drifting to the feral right}{a125}{}
+\definecaption{qa220}{she [Jacinda Adern, Prime Minister of New Zealand] is the beacon for how politics \mkbibitalic{can} be done -- progressive, inclusive, considered -- and still romp home at the elections.}{a125}{}
+\definecaption{qa221}{Part of the success of the new squad is down to the creation of a database that allows missing persons files to be cross-referenced with unidentified human remains and other evidence via computer, rather than relying on manual comparisons. This initiative is codenamed Project Alethia, meaning \mkbibquote{seeker of truth}.}{a128}{}
+\definecaption{qr23}{It was just pot luck, mate. A billion to one -- bigger, a trillion to one. Got more chance of being struck by lightning twice.}{qq18}{}
+
+\definecaption{qa222}{a wilderness of mirrors}{a139}{23d}
+\definecaption{qa223}{A word of advice though: maybe watch in separate rooms. Some things are just not meant to be shared.}{a140}{35d}
+
+\definecaption{qa224}{But if you think it's OK for this to be your norm and you don't do something about it then, sorry, you aren't thinking straight. And I mean this literally.}{a145}{33c}
+\definecaption{qa225}{Money rules.}{a143}{32e}
+\definecaption{qa226}{NSW has all of the attitude and none of the smarts.}{a143}{32e}
+
+\definecaption{qr24}{What people remember are the offenders. If you think of Ivan Milat, how many people would know his name? Everyone. If you ask anyone who his victims are they would just say the backpacker seven. The victim always gets consumed into the identity of the offender; they lose their own identity.}{qq19}{16b}
+
+\definecaption{qa227}{logic rarely conquers emotion}{a146}{7b}
+\definecaption{qa228}{this is a rare case where it's necessary to avoid spoilers for the beginning of a film, rather than the end}{a147}{13c}
+\definecaption{qa229}{fashionably \mkbibquote{transgressive}: \mkbibemph{Suspiria}}{a147}{13d}
+\definecaption{qa230}{To a degree, it's a plus that Aster is working close enough to his unconscious that he hasn't entirely thought through all the possible meanings.}{a147}{13d}
+\definecaption{qa231}{as if both [Aster and Guadagnino] were fantasising, consciously or not, about just what sacrifices it might take to conquer Hollywood.}{a147}{13d}
+\definecaption{qa232}{Television is, perhaps, ultimately a kind of electronic medicine cabinet, an odd collection of panaceas and placebos intended to alternately thrill, dull or distract. Whatever ails you in 2019, there isn't much that a dose of \mkbibemph{Seachange} cannot fix.}{a150}{31d}
+
+\definecaption{qa233}{Visually the series delivers a more comprehensive view of Pearl Bay than its predecessor, perhaps in part thanks to the advent of drone photography. But perhaps the most striking change is the difference in speed between the original and the remake; the former was slowed-down, and almost dreamlike, while the reboot runs at a cracking pace.}{a150}{31d}
+\definecaption{qa234}{the coastal map dot of Pearl Bay}{a150}{31a}
+
+\definecaption{qa235}{it is nasty -- the worst parts of Trump's rhetoric combined with a religiosity that denies the humanity of anyone who doesn't adhere to it. It is one American import we could do without.}{a151}{13d}
+\definecaption{qa236}{It [CPAC] is as American as apple pie, and its importation to Australia is fitting, because increasingly the far-right and religious-right conservatives in this country seem to be nicking their ideas from the Americans.}{a151}{13c}
+\definecaption{qa237}{a dramatised think-piece}{a152}{45c}
+\definecaption{qa238}{Looked at one way, the premise of \mkbibemph{Late Night} is pure science fiction: in reality, no woman has ever succeeded as a late-night host on US TV on anything like this scale (Joan Rivers lasted seven months, which shows the magnitude of the problem).}{a152}{45c}
+\definecaption{qa239}{As many actors have learned the hard way, you can't \mkbibemph{play} a funny person: you geuinely have to be funny, ot not. Emma Thompson is funny, and always has been: she got her start, in Cambridge Footlights revues, performing alongside the likes of Stephen Fry.  But she doesn't much tap into her funniness as Katherine Newbury, the British host of a long-running American talk show in \mkbibemph{Late Night}.}{a152}{45b}
+
+\definecaption{qr25}{Once you read true crime it's so powerful that fictional crime for me became a little tired.}{qq20}{21c}
+\definecaption{qr26}{\mkbibbrackets{to give the story an ending that is so often lacking in true crime} There's justice you can get in fiction, and a sense for the reader that it worked out well, didn't it?}{qq20}{21d}
+
+\definecaption{qa240}{When we first meet him, Wilberforce (Ioan Gruffudd) is about to give up the struggle, debilitated by fruitless years of campaigning, but the love of a new woman in his life (Romola Garai) performs the necessary magic and the fight goes on.}{a155}{45a}
+
+\definecaption{qr27}{It's very easy to hide the money they are earning on nice clothes, shoes, or a lavish lifestyle. It's like a secret little Sydney society of \emph{Stepford Wives} seeking arrangements with men other than their husbands.}{qq21}{21b}
+\definecaption{qr28}{When I worked at one sex club at Bondi Junction, the receptionist did the linen. She would offer to iron school uniforms as well, and many of my colleagues would be checking their phones at about 3pm to be sure their children were being picked up from school. Many had husbands who didn't know what they were doing.}{qq22}{21c}
+	
+	

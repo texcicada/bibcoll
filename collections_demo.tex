@@ -1,0 +1,508 @@
+% arara: lualatex
+% arara: biber
+% arara: lualatex
+
+
+\documentclass{article}
+\title{Collections, Series, and Sets}
+\author{xxx}
+
+\usepackage{xcolor}
+\pagecolor{red!3}
+\usepackage{changepage}%for adjustwidth
+\usepackage{graphicx}
+\usepackage{tikz}
+
+\usepackage{fontspec}
+\setmainfont{Noto Serif}
+
+\newcommand\workcredit[1]{{%
+\addfontfeatures{Opacity=0.5,Colour=blue}\rotatebox{90}{\scshape\small#1}%
+}}
+
+\newcommand\captionbox[3]{% 1= toc entry, 2 = caption text, 3=label
+\begin{adjustwidth}{3cm}{3cm}\caption[#1]{#2}\label{#3}
+\end{adjustwidth}%
+}
+
+\usepackage{polyglossia}
+\setmainlanguage{australian}%uses gloss-australian.ldf
+%\setmainlanguage{english}
+
+
+\usepackage[british]{datetime2} % for date formatting of \today: put after polyglossia
+
+\usepackage[style=british]{csquotes}
+\usepackage[
+%	datamodel=bibtvseries,
+%	datamodel=bibart,
+	datamodel=bibdm_combo3,  
+	style=oxnotes, % uses australian-oxref.lbx stand-in file
+%	scnames=true,      %, in oxnotes style, not in oscola style
+	%annotation = true,
+	minxrefs=1,
+	locallabelwidth=true,
+	citecounter=true,
+	datecirca=true,
+	language=australian,
+		]{biblatex}
+%============  bib overrides
+%\DeclareNameAlias{sortname}{given-family}
+%============  bib resources
+%\addbibresource{./bibart.bib}
+%\addbibresource{bookseries.bib}
+%\addbibresource{./bibtv.bib}
+%\addbibresource{./fullcasebib2.bib}
+%\addbibresource{./bibstamp.bib}
+\addglobalbib{./bibart.bib}
+\addglobalbib{bookseries.bib}
+\addglobalbib{./bibtv.bib}
+\addglobalbib{./fullcasebib2.bib}
+\addglobalbib{./bibstamp.bib}
+
+%============  bibliography commands
+\DeclareLanguageMapping{english}{english-bibdm_combo}
+\input{bibinput_bookset}
+\input{bibinput_bibtvseries}
+\input{bibinput_artwork}
+\input{bibinput_stampset}
+
+
+
+%============  quotations
+\input{qart}
+
+
+
+
+
+%============  colophon
+\newcommand\docolophon{
+\font\fleurons="wmdesigns1" at 36pt
+\vspace{5pt}
+\hrule
+\par \ 
+\begin{center}
+ {\color{brown}\fleurons{h}}
+\end{center}
+}
+\defbibnote{bibcolophon}{\docolophon}
+
+
+\newcommand\showcmnd[1]{%
+\textbackslash\texttt{#1}%
+}
+
+%============ contains
+%\DeclareFieldFormat{contains}{
+%  \printtext{Contains:}%
+%  \begin{enumerate}%
+%    \forcsvfield{\entry}{contains}
+%  \end{enumerate}%
+%}
+%
+%
+%\DeclareBibliographyDriver{archivalsource}{%
+%  \usebibmacro{bibindex}%
+%  \usebibmacro{begentry}%
+%  \printfield{title}. %
+%  \printfield{contains}%
+%  \iflistundef{contains}{\finentry}{}}
+
+
+%============ category
+%%\defbibentryset{setA}{gi11, b5, lis24, a151,}
+%\DeclareBibliographyCategory{robot}
+%\addtocategory{robot}{gi11, b5, lis24, a151,}
+%%
+%%%\defbibfilter{primary}{keyword=primary or category=primary}
+%%
+%\defbibfilter{robot}{category=robot}
+
+%\defbibfilter{robot}{keyword=robot}
+
+
+
+%============  document 
+\begin{document}
+\maketitle
+\tableofcontents
+\tikzstyle{every picture}+=[remember picture]
+\tikzstyle{na}=[
+	shape=rectangle,
+	inner sep=0pt,
+	text depth=0pt
+]
+\section{Citation Usage}
+Medium neutral citation of layered assemblages, 
+%beginning with creative works, 
+by title and natural subunits (if any), such as chapters and episodes: more generally, anything in a set/element relationship. 
+%The set is usually called a series, and the members of the set could be anything (stories, paintings, stamps), 
+Biblatex's cross-referencing function allows inheritance across these layers.\subsection{Book Sets}
+\subsubsection{\showcmnd{bcite}}
+Use \showcmnd{bcite} to cite a specific book in a series -- {\color{blue}\bcite[\nopp c4]{bsm52}} and {\color{blue}\bcite[\nopp c5]{bsm49}}.
+
+
+Also use \showcmnd{bcite} to cite from a specific book in an author's (collected) works, like Bronte's --  {\color{blue}\bcite{bsm76}} or multiple works from the same or different authors --  {\color{blue}\bcite{bsm125, bsm131, bsm70}}. Second cite: {\color{blue}\bcite[\nopp~c14]{bsm131}}.
+
+%Smollett \bcite{bsm147}
+%\bcite{bsm150}
+%\bcite{bsm149}
+%\bcite{bsm152}
+
+\subsubsection{@bookset and @booksetelement}
+\begin{center}
+\begin{tabular}{c|p{0.32\textwidth}|p{0.52\textwidth}|}
+\hline
+\rule{0pt}{0.5ex} 1 & a @bookset entry containing author details (name and date) & \texttt{@bookset\{% 
+\tikz\node[na](ref1){blyton,};\newline
+Author = \{Enid Blyton\},\newline
+date = \{1897/1968\},\newline\}\newline
+} \\
+2 & a @bookset entry containing series details (for the bib: series name, crossref, sortkey and  keywords) & \texttt{@bookset\{\tikz\node[na](ref3){malorytowers,};\newline 
+Title = \{Malory Towers\},\newline 
+crossref = \{\tikz\node[na](ref2){blyton\},};\newline 
+sortkey = \{Malory Towers\},\newline 
+keywords = \{series, school\},\newline 
+\}\newline 
+} \\
+3 & a @booksetelement entry containing the book details (for the citation: title and shorthand introduction, or shorthand; for the bib: date, sortkey, keywords and xref) & \texttt{@booksetelement\{bsm16,\newline 
+Title = \{Second Form at Malory Towers\},\newline 
+Date = \{1947\},\newline 
+Series = \{Malory Towers\},\newline 
+Number = \{2\},\newline 
+xref = \{\tikz\node[na](ref4){malorytowers\},};\newline 
+sortkey = \{Malory Towers02\},\newline 
+shorthand = \{EB--MT2\},\newline 
+keywords = \{series\},\newline 
+\}\newline }
+ \\
+$\to$ & Result: \newline \textbackslash bcite[\textbackslash nopp~c3]\{bsm16\} & {\color{blue}\bcite[c3]{bsm16}} \\
+\hline
+\end{tabular}
+\end{center}
+\begin{tikzpicture}[overlay]
+	\path[->,red,thick] (ref2) edge [out=0,in=0] (ref1);
+	\path[->,brown,thick] (ref4) edge [out=0,in=0] (ref3);
+\end{tikzpicture}
+%node[sloped,anchor=north]
+
+%\subsubsection{Other cite commands}
+%\citetitle{bsm16}, %title only
+%\citeauthor{bsm16},%empty
+%\citeauthor{blyton},%last name: item prints in bib
+%\cite{bsm16},%shorthand 
+
+\subsubsection{What \showcmnd{bcite} does}
+On first cite, \showcmnd{bcite} prints the book title and the shorthand introduction; on subsequent cites, it prints the shorthand.
+
+\showcmnd{bcite} handles multi-cites: {\color{blue}\bcite{bsm29, bsm30}}.
+
+The \showcmnd{fullcite} for a @booksetelement looks like this:\\{\color{blue}\fullcite{bsm16}}
+
+\subsection{TV Series}
+Episodes on TV also form sets.
+
+Use \showcmnd{citesntitleref} to refer to a TV series -- like {\color{blue}\citesntitleref{lis}}, and that other one {\color{blue}\citesntitleref{b5}}.
+
+\subsubsection{Citing TV Episodes}
+Episode titles, like {\color{blue}\citeeptitlerefl{iat19}} and {\color{blue}\citeeptitlerefl{gi37}}, come in several citation flavours.
+
+\begin{center}
+\begin{tabular}{c|p{0.35\textwidth}|p{0.42\textwidth}|}
+\hline
+1 & \showcmnd{citeeptitle\{gi11\}} episode title &\citeeptitle{gi11} \newline\newline\\
+2 & \showcmnd{citeeptitleplain\{gi11\}} episode title plain &\citeeptitleplain{gi11} \newline\newline\\
+3 & \showcmnd{citeeptitleref\{gi11\}} episode title ref &\citeeptitleref{gi11} \newline\newline\\
+4 & \showcmnd{citeeptitlerefl\{gi11\}} episode title ref long &\citeeptitlerefl{gi11} \newline\\
+5 & \showcmnd{citestitleref\{gi11\}} series title via citing episode &\citestitleref{gi11} \newline\newline\\
+6 & \showcmnd{citesntitleref\{gi\}} series title via citing series &\citesntitleref{gi} \newline\newline\\
+7 & \showcmnd{citeepsref\{gi11\}} episode short reference &\citeepsref{gi11} \newline\\
+\hline
+\end{tabular}
+\end{center}
+
+
+\subsubsection{@bibtvseries and @bibtvepisode}
+TV series and episode bib entries follow a similar pattern to the book sets.
+
+\begin{center}
+\begin{tabular}{c|p{0.25\textwidth}|p{0.62\textwidth}|}
+\hline
+1 & @bibtvseries &
+\texttt{ 
+@bibtvseries\{lis,\newline
+title=\{Lost in Space\},\newline
+titleabbrev=\{LiS\},\newline
+date=\{1965/1968\},\newline
+numberseasons=\{3\},\newline
+numberepisodes=\{83\},\newline
+episodelength=\{40\},\newline
+genre=\{science fiction\},\newline
+genreb=\{space adventure\},\newline
+setting=\{outer space\},\newline
+timeperiod=\{1999\},\newline
+producer=\{Irwin Allen\},\newline
+premise=\{space family explorers lost in space\},\newline
+like=\{Swiss Family Robinson in space\},\newline
+keywords=\{tv series\},\newline
+\} \newline
+} \\
+2 & @bibtvepisode &
+\texttt{@bibtvepisode\{lis1,\newline
+episodetitle =\{The Reluctant Stowaway\},\newline
+episodecount =\{1\},\newline
+seriesnumber =\{1\},\newline
+episodenumber =\{1\},\newline
+director =\{Anton M Leader\},\newline
+writer =\{S Bar-David\},\newline
+crossref =\{lis\},\newline
+keywords=\{tv series\},\newline
+\}\newline} \\
+$\to$ & \showcmnd{citeepsref\{lis1\}} & {\color{blue}\citeepsref{lis1}} \\
+\hline
+\end{tabular}
+\end{center}
+
+The series abbreviation, \texttt{LiS}, is inherited by \showcmnd{bibtvepisode} from \showcmnd{bibtvseries}'s \texttt{titleabbrev} field via the \texttt{crossref}erence.
+
+\subsection{Works of Art}
+Intended as the caption to an illustration: Title, date, artist, school/style, type, medium, dimensions, location -- 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{MonaLisa.jpg}\ \workcredit{Wikipedia}
+\begin{adjustwidth}{3cm}{3cm}\caption[Mona Lisa]{\fullcite{art1}}
+\end{adjustwidth}
+\end{figure}
+
+%\\{\color{blue}\fullcite{art1}}
+
+Uses \showcmnd{fullcite}; there is no custom artcite command.
+\subsubsection{@bibart}
+\begin{center}
+\begin{tabular}{c|p{0.28\textwidth}|p{0.52\textwidth}|}
+\hline
+1 & \showcmnd{@bibart} entry &
+\texttt{
+@bibart\{art1,\newline
+artist = \{Leonardo \{da Vinci\}\},\newline
+title = \{Mona Lisa\},\newline
+origtitle = \{La Giaconda\},\newline
+date = \{1503\textasciitilde\},\newline
+provenance = \{The Louvre\},\newline
+origprov = \{Musée du Louvre\},\newline
+city = \{Paris\},\newline
+medium = \{oil on wood (Lombardy poplar)\},\newline
+dimensions = \{77 x 53 cm\},\newline
+worktype = \{painting\},\newline
+workstyle = \{Renaissance\},\newline
+\}\newline
+}%end texttt
+\\
+2 & No customised citation driver defined \newline & -- \\
+3 & \showcmnd{citetitle\{art1\}}
+ & {\color{blue}\citetitle{art1}}\newline
+ \\
+4 & \showcmnd{cite\{art1\}}
+ & {\color{blue}\cite{art1}}\newline
+ \\
+5 & \showcmnd{fullcite\{art1\}} uses the bibliography driver
+ & {\color{blue}\fullcite{art1}}\newline
+ \\
+  \hline
+\end{tabular}
+\end{center}
+
+
+\subsection{Stamps}
+\subsubsection{\showcmnd{stampcite}}Postage stamps also form sets and elements, and individual stamps are cited by caption and denomination, using the \showcmnd{stampcite} custom command: like the jewel-like \stampcite{stamp2}. And one from the \citetitle{stmpseries2}\footnote{The series itself is cited via \showcmnd{citetitle\{stmpseries2\}}} series: \stampcite{stamp7}, with its honey-eater bird, an Eastern Spinebill. And a single stamp
+ from \citetrackerfalse
+ \stampcitec{stamp10}:
+ \citetrackertrue
+\stampcite{stamp10}.
+Repeated cite: a painted lady butterfly is also visible in the garden \stampcite{stamp7}.
+
+\subsubsection{@bibstampseries and @bibstamp}
+\begin{center}
+\begin{tabular}{c|p{0.28\textwidth}|p{0.52\textwidth}|}
+\hline
+ 1 & \showcmnd{stampcite\{stamp1\}}
+ & {\color{blue}\stampcite{stamp1}}\newline
+ \\
+2 & The \showcmnd{@bibstampseries} series entry in the bib file&
+ \texttt{@bibstampseries\{\tikz\node[na](ref5) {stmpseries1,};\newline
+ country = \{Australia\},\newline
+ title = \{Native Bees\},\newline
+ date = \{2019-05-14\},\newline
+ denomination = \{4 x \$1\},\newline
+ illustration = \{Kevin Stead\},\newline
+ sortkey = \{Native Bees\},\newline
+ keywords = \{stampseries\},\newline
+ \}} \newline \\
+3 & The \showcmnd{@bibstamp} stamp entry in the bib file &
+\texttt{@bibstamp\{stamp1, \newline
+stampdenomination = \{\$1\}, \newline
+xref = \{\tikz\node[na](ref6) {stmpseries1\},}; \newline
+stampcaption = \{Resin Bee (\textbackslash mkbibemph\{Megachile macleayu\})\}, \newline
+sortkey = \{Native Bees01\}, \newline
+sortkeyref = \{Native Bees\}, \newline
+keywords = \{stampseries\}, \newline
+shorthand = \{Aus--NB1\}, \newline
+\}} \newline
+\\
+4 & Referring to a country (stored in \showcmnd{sortkeyref}) for series-less stamps: \newline
+\showcmnd{citetrackerfalse}
+ \showcmnd{stampcitec\{stamp10\}}
+ \showcmnd{citetrackertrue}  & 
+\citetrackerfalse
+ \stampcitec{stamp10}
+ \citetrackertrue \newline \\
+\hline
+\end{tabular}
+\end{center}
+\begin{tikzpicture}[overlay]
+	\path[->,red,thick] (ref6) edge [out=0,in=0] (ref5);
+\end{tikzpicture}
+
+
+\subsection{Generic texts -- quotations}
+An ordinary quotation, from an article: \usecaption{qa175}.
+\subsubsection{The Sahara}
+A quote from an interviewee:
+\begin{quotation}
+\usecaption{qr17}.
+\end{quotation}
+
+This is done with the
+%\definecaption{qr17}{It seems very reasonable that the deserts of the Sahara, Arabia, Mongolia and Gobi probably played an important role in keeping different populations apart for long periods of time.}{qq13}{}
+
+\verb|\definecaption{quote key}{quote text}{citation}{pinpoint}|
+
+
+command, linking quotation and citation together, and applied with the
+
+\verb|\usecaption{quote key}| command.
+
+Here, command \verb|\definecaption| creates a \verb|Δdcqr17| command which 
+
+uniquely identifies the quotation text -- 
+
+qr17: It seems very reasonable \ldots
+
+and links in the quote's author 
+
+\verb|@articlequotee{qq13,author={Eleanor Scerri}, ...}|
+
+$\mapsto$ \verb|related={a102},| and \verb|relatedtype={quotedin},|
+
+$\mapsto$ \verb|@article{a102,author={...}...crossref={j67}, ...}|
+
+$\mapsto$ \verb|@periodical{j67,journaltitle={New Scientist}...}|.
+
+
+And a quotation:
+
+\begin{quotation}
+\usecaption{qic1}. See Figure \ref{fig:carp} for the Latin.
+\end{quotation}
+
+%Continuing the `university students find jobs in bakery' theme, Professor Dough's goal of industrification of the curriculum finds its ...
+
+\begin{figure}%[ht]
+\frame{\includegraphics[width=0.72\linewidth]{./iosares.jpg}}\ \workcredit{GoogleBooks}
+\centering
+%\caption{John of Salisbury, 12th c, on the carping of Cornificius (\small\textit{Metalogicon}, b1c5, 1610 edition, GoogleBooks)}
+\captionbox{On carping}{John of Salisbury, 12th c, on the carping of Cornificius (\small\textit{Metalogicon}, b1 c5, 1610 edition)}
+{fig:carp}
+\end{figure}
+
+
+%\section{Legal Irony}
+%
+%\doquote{\usecaption{q15}}
+%
+%\doquote{\usecaption{q18}}
+%
+%\doquote{\usecaption{q19}}
+
+
+
+
+\newpage
+%==========================
+%\nocite{*}
+%\printshorthands
+\printbibheading
+\printbibliography[
+	heading=subbibliography,%
+	type=bibart,
+	title={Artworks}
+	]
+%%\newrefcontext[sorting=sortbksns]	
+%\newrefcontext[sorting=nty]
+\printbibliography[
+	keyword=series,
+	heading=subbibliography,
+	title={Book Series},
+	]
+\printbibliography[
+	keyword=works,
+	heading=subbibliography,
+	title={Collected Works},
+	]
+
+\printbibliography[
+	keyword=stampseries,
+	heading=subbibliography,
+	title={Postage Stamps},
+	]
+
+%\printbibliography[
+%	keyword=tv series,
+%	heading=subbibliography,
+%	title={TV Series},
+%%	 use 'sorting' option to '\newrefcontext'.
+%%	sorting=bibtvsort,
+%	]
+%\newrefcontext[sorting=nty]
+\printbibliography[
+	heading=subbibliography,%
+	type=bibtvseries,
+	title={TV Series}
+	]
+\newrefcontext[sorting=bibtvsort]
+\printbibliography[
+	heading=subbibliography,%
+	type=bibtvepisode,
+	title={TV Episodes by episode title}
+	]
+\newrefcontext[sorting=bibtvsortse]
+\printbibliography[
+	heading=subbibliography,%
+	type=bibtvepisode,
+	title={TV Episodes by series and sequence}
+	]
+\newrefcontext[sorting=nty]
+\printbibliography[
+	heading=subbibliography,%
+	nottype=bibart,
+	nottype=bibtvseries,
+	nottype=bibtvepisode,
+	nottype=bibstampseries,
+	nottype=bibstamp,
+	notkeyword=series,
+	notkeyword=works,
+	title={General references},
+	postnote={bibcolophon},
+	]
+
+%\cite{SetA}
+%\cite{a151, bsm16}
+%\printbibliography[filter=robot]
+
+%Sets are for numeric/label styles
+%Keyword has to be in the inherited-from entry, as well.
+
+\end{document}
+
