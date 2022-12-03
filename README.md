@@ -1,2 +1,2 @@
 # bibcoll
-Biblatex style set for collections of materiak
+Biblatex style set for collections of things
