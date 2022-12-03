@@ -1,0 +1,291 @@
+%%From authortitle.bbx:
+%\ExecuteBibliographyOptions{pagetracker}%
+%\renewbibmacro*{bbx:savehash}{\savefield{fullhash}{\bbx@lasthash}}
+
+\renewbibmacro*{author}{%
+  \ifboolexpr{%
+%    test \ifuseauthor
+%    and
+    not test {\ifnameundef{author}}%
+  }
+    {\usebibmacro{bbx:dashcheck}%
+       {\bibnamedash}%
+       {\printnames{author}%
+        \setunit{\printdelim{authortypedelim}}%
+        \usebibmacro{bbx:savehash}}%
+     \usebibmacro{authorstrg}}%
+    {%\global\undef\bbx@lasthash
+    }}%
+
+
+
+%--------------------------------------
+%\DeclareStyleSourcemap{
+%\maps[datatype=bibtex]{
+%\map[overwrite]{
+%\step[fieldsource=singer, fieldtarget=author,origfieldval]
+%\step[fieldsource=song, fieldtarget=title,origfieldval]
+%}
+%}
+%}
+
+\DeclareSortingTemplate{sortmusic}{
+%\sort{
+%	\field{seriestitle}
+%	}
+\sort{
+	\field{author}
+	}
+\sort{
+	\field{albumtitle}
+	}
+\sort{
+	\field{title}
+	}
+\sort{
+	\field{sortkey}
+	}
+}
+
+
+%------------------------------------
+\DeclareNameFormat[bibmusic]{author}{%
+%\textsc{#1}%
+    \usebibmacro{name:family-given}
+      {\textsc{\namepartfamily}}
+      {\namepartgiven}
+      {\namepartprefix}
+      {\namepartsuffix}%
+}
+
+%------------------------------------
+\DeclareNameFormat[bibmusic]{authora}{%
+    \usebibmacro{name:given-family}
+      {\textsc{\namepartfamily}}
+      {\namepartgiven}
+      {\namepartprefix}
+      {\namepartsuffix}%
+}
+
+
+%------------------------------------
+\DeclareFieldFormat[bibmusic]{albumtitle}{%
+    \mkbibbold{#1}%
+}
+
+%------------------------------------
+\DeclareNameFormat[bibmusic]{plainauthor}{%
+%\textsc{#1}%
+    \usebibmacro{name:given-family}
+      {\namepartfamily}
+      {\namepartgiven}
+      {\namepartprefix}
+      {\namepartsuffix}%
+}
+
+
+
+
+
+%%%%%{%
+%%%%%  \usebibmacro{begentry}%
+%%%%%   	\ifkeyword{works}{%
+%%%%%   	\printnames{author}%
+%%%%%%   	\printfield{bdate} xxx \printfield{year}
+%%%%%   	\iffieldundef{year}{}{%
+%%%%%   	\small%
+%%%%%   		\addspace\mkbibparens{\printfield{year}%
+%%%%%\bibdaterangesep\printfield{endyear}}%
+%%%%%   	}%if
+%%%%%}{%else not works:
+%%%%% {\large\printfield{title}}%
+%%%%% \ifnameundef{author}{xx}{%
+%%%%%  	\addspace
+%%%%%  	\biblstring{jourser}
+%%%%%  	}%if
+%%%%% 	\addspace
+%%%%%  		\bibstring{byauthor}
+%%%%%  	\printnames{author}%
+%%%%%  	}%if
+%%%%%  \usebibmacro{finentry}}
+
+
+
+
+%------------------------------------
+\DeclareBibliographyDriver{bibmusic}{%
+  \usebibmacro{begentry}%
+  \usebibmacro*{author}%
+%        	\printnames{author}%
+%   	: if either albumtitle or title, then colon after name:
+\ifboolexpr{ (test {\iffieldundef{albumtitle}})
+			and (test {\iffieldundef{title}})}
+			{}% then nothing
+		{% else
+		\addcolon
+		}%
+		%if title
+		\ifboolexpr{ (test {\iffieldundef{title}} )}
+		{% no title
+%			  	\addcomma
+  				\addspace
+  				\printfield{albumtitle}%
+  					\addspace
+   					\iffieldundef{albumyear}{}{%
+  							\mkbibparens{\printfield{albumyear}}}		
+		}{% title
+  	\addspace
+   \printfield{title}%
+			  	\addcomma
+  				\addspace
+  				\printfield{albumtitle}%
+  					\addspace
+   					\iffieldundef{albumyear}{}{%
+  							\mkbibparens{\printfield{albumyear}}}		
+		}
+  \usebibmacro{finentry}}
+
+
+
+
+
+
+
+
+%%\DeclareBibliographyDriver{bibmusic}{%
+%%  \usebibmacro{begentry}%
+%%   	\ifkeyword{albums}{%
+%%   	\printnames{author}%
+%%%   	\printfield{bdate} xxx \printfield{year}
+%%   	\iffieldundef{year}{}{%
+%%   	\small%
+%%   		\addspace\mkbibparens{\printfield{year}%
+%%\bibdaterangesep\printfield{endyear}}%
+%%   	}%if
+%%}{%else not works:
+%% {\large\printfield{title}}%
+%% \ifnameundef{author}{xx}{%
+%%  	\addspace
+%%  	\printfield{albumtitle}
+%%%  	\addspace
+%%%  	\biblstring{album}
+%%  	}%if
+%% 	\addspace
+%%  		\bibstring{byauthor}
+%%  	\printnames{author}%
+%%  	}%if
+%%  \usebibmacro{finentry}}
+
+
+
+\newenvironment{subbiblistm}
+  {\begin{list}
+      {\printfield[shorthandwidth]{shorthand}}%
+      {\setlength{\labelwidth}{\shorthandwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}}
+  {\end{list}}
+
+%%%\makeatletter
+%%%\DeclareBibliographyDriver{bibmusic}{%
+%%%%  \usebibmacro{bibindex}%
+%%%  % from https://tex.stackexchange.com/a/463414/105447
+%%%  % don't issue \leavevmode inside here
+%%%  \let\blx@leavevmode\relax
+%%%  % get rid of the \leavevmode from the beginning of the entry
+%%%  % this avoids an empty line before the enumerate
+%%%  \vspace{-\dimexpr\baselineskip+\itemsep\relax}%
+%%%  \begin{subbiblistm}
+%%%    \item XX
+%%%    \usebibmacro{begentry}%
+%%%    \printfield{title}%
+%%%%%    \iffieldundef{albumtitle}{}{%
+%%%%%    \addspace\mkbibparens{%
+%%%%%%    \bibstring{fulltitle}\addcolon\addspace
+%%%%%	\mkbibemph{%
+%%%%%    \printfield{albumtitle}
+%%%%%%        \iffieldundef{longsubtitle}{}{%
+%%%%%	    \addcolon\addspace
+%%%%%	    \printdate{albumyear}
+%%%%%%	    }%if
+%%%%%	    }%emph
+%%%%%    }%parens
+%%%%%    }%if
+%%%%   \addspace\mkbibbrackets{\printfield{year}}
+%%%%    \addspace\mkbibparens{\printfield{year}}
+%%%    \usebibmacro{related}
+%%%%  \iftoggle{bbx:related}
+%%%%    {\usebibmacro{related:init}%
+%%%%     \usebibmacro{related}}
+%%%%    {not related}%if
+%%%    \usebibmacro{finentry}%
+%%%  \end{subbiblistm}%
+%%%}
+%%%\makeatother
+
+
+
+
+
+%------------------------------------
+\DeclareCiteCommand{\musiccite}
+{% prenote
+    \usebibmacro{prenote}%
+}
+{%loopcode
+\printfield{title}
+%\ifciteseen
+%{\printfield{shorthand}\usebibmacro{postnote}}%
+%{\printfield{title} \usebibmacro{shorthandintro}\usebibmacro{postnote}}%
+}
+{%sepcode
+    \multicitedelim%
+}
+{%postnote
+\usebibmacro{postnote}%
+}
+
+
+%------------------------------------
+\DeclareCiteCommand{\musiccitea}
+{% prenote
+    \usebibmacro{prenote}%
+}
+{%loopcode
+			\ifciteseen
+			{\printnames[plainauthor]{author}}
+    {\printnames[authora]{author}}%
+}
+{%sepcode
+    \multicitedelim%
+}
+{%postnote
+\usebibmacro{postnote}%
+}
+
+
+%------------------------------------
+\DeclareCiteCommand{\musicciteb}
+{% prenote
+    \usebibmacro{prenote}%
+}
+{%loopcode
+\ifciteseen
+		{\printfield{albumtitle}%
+    }%
+    {\printfield{albumtitle}%
+    \iffieldundef{albumyear}{}%
+			{\addspace%
+    \mkbibparens{\printfield{albumyear}}}%
+    }%
+}
+{%sepcode
+    \multicitedelim%
+}
+{%postnote
+\usebibmacro{postnote}%
+}

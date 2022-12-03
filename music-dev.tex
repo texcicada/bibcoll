@@ -1,0 +1,96 @@
+% arara: lualatex
+% arara: biber
+% arara: lualatex
+
+
+\documentclass{article}
+%\usepackage{etoolbox}
+
+\usepackage{xcolor}
+\usepackage{polyglossia}
+\setmainlanguage{australian}%uses gloss-australian.ldf
+
+
+\usepackage[british]{datetime2} % for date formatting of \today: put after polyglossia
+
+\usepackage[style=british]{csquotes}
+\usepackage[
+	datamodel=bibcolldm,  
+	style=oxnotes, % uses australian-oxref.lbx stand-in file
+%	scnames=true,      %, in oxnotes style, not in oscola style
+	%annotation = true,
+	minxrefs=1,
+	locallabelwidth=true,
+	citecounter=true,
+	datecirca=true,
+	language=australian,
+	dashed=true,
+		]{biblatex}
+%============  bib overrides
+%============  bib resources
+\addglobalbib{./bibmusic2.bib}
+
+
+
+%============  bibliography commands
+\DeclareLanguageMapping{english}{english-bibcolldm}
+\input{bibinput_bookset}
+\input{bibinput_bibtvseries}
+\input{bibinput_artwork}
+\input{bibinput_stampset}
+\input{bibinput_bibmusic}
+
+
+
+
+\newcommand\showcmnd[1]{%
+\textbackslash\texttt{#1}%
+}
+
+\setlength{\fboxsep}{0pt}
+%\setlength{\fboxrule}{0pt}
+
+\newcommand\showcmndc[1]{%
+\texttt{\colorbox{blue!20!green!12}{\textbackslash#1}}%
+}
+
+\newcommand\cbb[1]{%
+\colorbox{red!20!yellow!25}{#1}%
+}
+
+
+
+%============  document 
+\begin{document}
+\tableofcontents
+
+\subsection{Music}
+\subsubsection{\showcmnd{musiccite}}
+Use \showcmndc{musiccite} to cite a specific song on an album or in an opera, or a movement in a symphony -- {\color{blue}\musiccite{xtmiahm}}.
+
+
+Second cite: \musiccite{xtmiahm}.
+
+Artist (\showcmndc{musiccitea}): 
+ \cbb{\musiccitea{jcollins}}.
+ Second cite: 
+ \cbb{\musiccitea{jcollins}}.
+
+Album (\showcmndc{musicciteb}):
+\cbb{\musicciteb{judith}}. 
+Second cite: 
+\cbb{\musicciteb{judith}}.
+
+
+.\musiccite[pre][post]{xsitc}.
+
+\newrefcontext[sorting=sortmusic]
+\printbibliography[
+	heading=subbibliography,%
+	type=bibmusic,
+%	type=music,
+	title={Music}
+	]
+
+\end{document}
+
