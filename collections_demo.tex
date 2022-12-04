@@ -34,9 +34,7 @@
 
 \usepackage[style=british]{csquotes}
 \usepackage[
-%	datamodel=bibtvseries,
-%	datamodel=bibart,
-	datamodel=bibdm_combo3,  
+	datamodel=bibcolldm,  
 	style=oxnotes, % uses australian-oxref.lbx stand-in file
 %	scnames=true,      %, in oxnotes style, not in oscola style
 	%annotation = true,
@@ -45,6 +43,7 @@
 	citecounter=true,
 	datecirca=true,
 	language=australian,
+	dashed=true,
 		]{biblatex}
 %============  bib overrides
 %\DeclareNameAlias{sortname}{given-family}
@@ -59,14 +58,17 @@
 \addglobalbib{./bibtv.bib}
 \addglobalbib{./fullcasebib2.bib}
 \addglobalbib{./bibstamp.bib}
+\addglobalbib{./bibmusic.bib}
+
+
 
 %============  bibliography commands
-\DeclareLanguageMapping{english}{english-bibdm_combo}
+\DeclareLanguageMapping{english}{english-bibcolldm}
 \input{bibinput_bookset}
 \input{bibinput_bibtvseries}
 \input{bibinput_artwork}
 \input{bibinput_stampset}
-
+\input{bibinput_bibmusic}
 
 
 %============  quotations
@@ -91,6 +93,17 @@
 
 \newcommand\showcmnd[1]{%
 \textbackslash\texttt{#1}%
+}
+
+\setlength{\fboxsep}{0pt}
+%\setlength{\fboxrule}{0pt}
+
+\newcommand\showcmndc[1]{%
+\texttt{\colorbox{blue!20!green!12}{\textbackslash#1}}%
+}
+
+\newcommand\cbb[1]{%
+\colorbox{red!20!yellow!25}{#1}%
 }
 
 %============ contains
@@ -138,7 +151,8 @@ Medium neutral citation of layered assemblages,
 %beginning with creative works, 
 by title and natural subunits (if any), such as chapters and episodes: more generally, anything in a set/element relationship. 
 %The set is usually called a series, and the members of the set could be anything (stories, paintings, stamps), 
-Biblatex's cross-referencing function allows inheritance across these layers.\subsection{Book Sets}
+Biblatex's cross-referencing function allows inheritance across these layers.
+\subsection{Books}
 \subsubsection{\showcmnd{bcite}}
 Use \showcmnd{bcite} to cite a specific book in a series -- {\color{blue}\bcite[\nopp c4]{bsm52}} and {\color{blue}\bcite[\nopp c5]{bsm49}}.
 
@@ -200,8 +214,8 @@ On first cite, \showcmnd{bcite} prints the book title and the shorthand introduc
 
 The \showcmnd{fullcite} for a @booksetelement looks like this:\\{\color{blue}\fullcite{bsm16}}
 
-\subsection{TV Series}
-Episodes on TV also form sets.
+\subsection{TV Shows}
+Episodes on TV also form sets and groups.
 
 Use \showcmnd{citesntitleref} to refer to a TV series -- like {\color{blue}\citesntitleref{lis}}, and that other one {\color{blue}\citesntitleref{b5}}.
 
@@ -417,6 +431,8 @@ And a quotation:
 {fig:carp}
 \end{figure}
 
+\doquote{\usecaption{qr18}}
+
 
 %\section{Legal Irony}
 %
@@ -426,6 +442,76 @@ And a quotation:
 %
 %\doquote{\usecaption{q19}}
 
+
+\subsection{Music}
+\subsubsection{\showcmnd{musiccite}}
+Use \showcmndc{musiccite} to cite a specific song on an album or in an opera, or a movement in a symphony -- {\color{blue}\musiccite{xtmiahm}}.
+
+
+Second cite: \musiccite{xtmiahm}.
+
+Artist (\showcmndc{musiccitea}): 
+ \cbb{\musiccitea{jcollins}}.
+ Second cite: 
+ \cbb{\musiccitea{jcollins}}.
+
+Album (\showcmndc{musicciteb}):
+\cbb{\musicciteb{judith}}. 
+Second cite: 
+\cbb{\musicciteb{judith}}.
+
+
+\musiccite[pre][post]{xsitc}.
+
+
+\subsubsection{@bibmusic and @xdata}
+\begin{center}
+\begin{tabular}{c|p{0.28\textwidth}|p{0.52\textwidth}|}
+\hline
+1 & The \showcmnd{@bibmusic} entry in the bib file for the song &
+ \texttt{@bibmusic\{xtmiahm,\} \newline
+title = \{The Moon is a Harsh Mistress\}, \newline 
+xdata=\{xjcalb1\}, \newline 
+ \}} \newline \\
+2 & The \showcmnd{@xdata} entry for the album &
+\texttt{@xdata\{xjcalb1, \newline
+albumtitle=\{Judith\}, \newline
+albumdate=\{1975\}, \newline
+xdata=\{xjcset\}, \newline
+\}} \newline
+\\
+3 & The \showcmnd{@xdata} entry for the artist  & 
+\texttt{@xdata\{xjcset, \newline
+author=\{Judy Collins\}, \newline
+date=\{1939/{}\}, \newline
+\}} \newline
+ \\
+4 & The \showcmnd{@bibmusic} entry in the bib file for the album &
+ \texttt{@bibmusic\{judith, \newline
+keywords =\{albums\}, \newline
+xdata=\{xjcalb1\}, \newline
+ \}} \newline \\
+5 & The \showcmnd{@bibmusic} entry in the bib file for the artist &
+ \texttt{@bibmusic\{jcollins, \newline
+xdata=\{xjcset\}, \newline
+ \}} \newline \\
+\hline
+\end{tabular}
+\end{center}
+%%%%%\begin{tikzpicture}[overlay]
+%%%%%	\path[->,red,thick] (ref6) edge [out=0,in=0] (refmin);
+%%%%%\end{tikzpicture}
+
+
+
+
+
+
+
+
+
+%\newpage
+%\section{Citation Commands Reference}
 
 
 
@@ -451,6 +537,14 @@ And a quotation:
 	heading=subbibliography,
 	title={Collected Works},
 	]
+
+\newrefcontext[sorting=sortmusic]
+\printbibliography[
+	heading=subbibliography,%
+	type=bibmusic,
+	title={Music}
+	]
+
 
 \printbibliography[
 	keyword=stampseries,
@@ -487,6 +581,7 @@ And a quotation:
 \printbibliography[
 	heading=subbibliography,%
 	nottype=bibart,
+	nottype=bibmusic,
 	nottype=bibtvseries,
 	nottype=bibtvepisode,
 	nottype=bibstampseries,
